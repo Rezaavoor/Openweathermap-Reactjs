@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {WeatherProvider} from './utils/WeatherContext';
 
 import Time from './Components/Time'
 import Weather from './Components/Weather'
@@ -23,10 +24,12 @@ function App() {
 
 
   return (
-    <Layout>
-      <Time/>
-      <Weather/>
-    </Layout>
+    <WeatherProvider>
+      <Layout>
+        <Time/>
+        <Weather/>
+      </Layout>
+    </WeatherProvider>
   );
 }
 

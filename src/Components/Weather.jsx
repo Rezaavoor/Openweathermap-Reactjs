@@ -1,12 +1,13 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import styled from 'styled-components'
+import {WeatherContext} from '../utils/WeatherContext'
 
 import Forcasts from './Forecasts'
 
 import sunriseIcon from '../Assets/Sunrise.svg'
 import sunsetIcon from '../Assets/Sunset.svg'
 
-import WeatherIcons from '../utils/WeatherIcons'
+import {BrokenClouds,ClearSky,FewClouds,Rain,ScatteredClouds,ShowerRain,Snow,Thunderstorm} from '../utils/WeatherIcons'
 
 const TheWeather = styled.div`
     width:60vw;
@@ -57,9 +58,7 @@ const TempNumber = styled.div`
     font-size:2.5rem;
     text-shadow:none;
 `
-const Cloud = styled.img`
-    height:50px;
-`
+
 const Suns = styled.div`
     display:flex;
     flex-direction:row;
@@ -75,28 +74,61 @@ const SunIcon = styled.img`
 `
 
 export default function Weather() {
+
+    const weatherData = useContext(WeatherContext)[0]
+    let CloudIMG
+    switch (weatherData.symbol) {
+    case "broken clouds":
+        CloudIMG = BrokenClouds;
+        break;
+    case "clear sky":
+        CloudIMG = ClearSky;
+        break;
+    case "few clouds":
+        CloudIMG = FewClouds;
+        break;
+    case "rain":
+        CloudIMG = Rain;
+        break;
+    case "scattered clouds":
+        CloudIMG = ScatteredClouds;
+        break;
+    case "shower rain":
+        CloudIMG = ShowerRain;
+        break;
+    case "snow":
+        CloudIMG = Snow;
+        break;
+    case "thunderstorm":
+        CloudIMG = Thunderstorm;
+        break;
+        default:
+            CloudIMG=<div>Weather Symbol Not Found</div>
+    }
+
     return (
         <TheWeather>
             <Shadow/>
             <OpenWeather>
                 <WeatherNow>
                     <Location>
-                        <h3>Stockholm, Sweden</h3>
+                        <h3>{`${weatherData.city} , ${weatherData.country}`}</h3>
                     </Location>
                     <Temp>
                         <TempNumber>
-                            <h1>22°</h1>
+                            <h1>{`${weatherData.temperature}°`}</h1>
                         </TempNumber>
-                        <Cloud src={WeatherIcons["broken clouds"]}/>
+                        {/* <Cloud src={WeatherIcons["broken clouds"]}/> */}
+                        <CloudIMG/>
                     </Temp>
                     <Suns>
                         <Sun>
                             <SunIcon src={sunriseIcon}/>
-                            01:48
+                            {weatherData.sunrise}
                         </Sun>
                         <Sun>
                             <SunIcon src={sunsetIcon}/>
-                            19:57
+                            {weatherData.sunset}
                         </Sun>
                     </Suns>
                 </WeatherNow>
