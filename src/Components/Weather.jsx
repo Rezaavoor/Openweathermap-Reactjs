@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { WeatherContext } from '../utils/WeatherContext'
-import { useSpring, animated, config } from 'react-spring'
+import { UiContext } from '../utils/UiContext'
+import { useSpring, animated } from 'react-spring'
 
-import Forcasts from './Forecasts'
+import Forecasts from './Forecasts'
 
 import sunriseIcon from '../Assets/Sunrise.svg'
 import sunsetIcon from '../Assets/Sunset.svg'
@@ -19,8 +20,7 @@ import {
   Thunderstorm,
 } from '../utils/WeatherIcons'
 
-const TheWeather = styled.div`
-  width: 60vw;
+const TheWeather = styled(animated.div)`
   height: 400px;
   position: absolute;
   left: 10%;
@@ -40,7 +40,7 @@ const Shadow = styled.div`
   height: 100%;
   background-color: black;
   /* background: radial-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0)); */
-  opacity: 0.1;
+  opacity: 0.2;
   position: absolute;
   color: black;
 `
@@ -72,7 +72,7 @@ const TempNumber = styled.div`
 const Suns = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 `
 const Sun = styled.div`
   display: flex;
@@ -80,7 +80,7 @@ const Sun = styled.div`
   align-items: center;
 `
 const SunIcon = styled(animated.img)`
-  width: 90px;
+  width: 70px;
 `
 const Cloud = styled.div`
   width: 100%;
@@ -89,20 +89,15 @@ const Cloud = styled.div`
   top: 3vh;
   transition: all 2s;
 `
-
+const Arrow = styled.div`
+  margin: auto;
+  margin-right: 1vw;
+  font-size: 2.5rem;
+  cursor: pointer;
+`
 export default function Weather() {
-  const weatherData = useContext(WeatherContext)[0]
-  const [cloudScale, setCloudScale] = useState(2)
-  const [cloudColor, setCloudColor] = useState('white')
-  const testSpring = useSpring({
-    to: async next => {
-      while (1) await next({ opacity: 0 })
-    },
-    config: { duration: 1000 },
-    from: { opacity: 1 },
-    reset: true,
-  })
-
+  const [weatherData, setWeatherData] = useContext(WeatherContext)
+  const [UiProps, setUiProps] = useContext(UiContext)
   let CloudIMG
   switch (weatherData.symbol) {
     case 'broken clouds':
@@ -132,9 +127,26 @@ export default function Weather() {
     default:
       CloudIMG = <div>Weather Symbol Not Found</div>
   }
-
+  const [expandedWeather, setExpandedWeather] = useState(false)
+  const expandWeather = () => {
+    {
+      expandedWeather
+        ? setUiProps({
+            weatherWidth: '60vw',
+          })
+        : setUiProps({
+            weatherWidth: '80vw',
+          })
+    }
+    setExpandedWeather(expandedWeather => !expandedWeather)
+  }
+  const weatherSpring = useSpring({
+    to: {
+      width: UiProps.weatherWidth,
+    },
+  })
   return (
-    <TheWeather>
+    <TheWeather style={weatherSpring}>
       <Shadow />
       <OpenWeather>
         <WeatherNow>
@@ -145,23 +157,23 @@ export default function Weather() {
             <TempNumber>
               <h1>{`${weatherData.temperature}°`}</h1>
             </TempNumber>
-            {/* <Cloud src={WeatherIcons["broken clouds"]}/> */}
             <Cloud>
-              <CloudIMG scale={cloudScale} color={cloudColor} />
+              <CloudIMG scale={2} />
             </Cloud>
           </Temp>
           <Suns>
             <Sun>
-              <SunIcon style={testSpring} src={sunriseIcon} />
+              <SunIcon src={sunriseIcon} />
               {weatherData.sunrise}
             </Sun>
             <Sun>
-              <SunIcon style={testSpring} src={sunsetIcon} />
+              <SunIcon src={sunsetIcon} />
               {weatherData.sunset}
             </Sun>
           </Suns>
         </WeatherNow>
-        <Forcasts />
+        <Forecasts expandedWeather={expandedWeather} />
+        <Arrow onClick={expandWeather}>{expandedWeather ? '<' : '>'}</Arrow>
       </OpenWeather>
     </TheWeather>
   )

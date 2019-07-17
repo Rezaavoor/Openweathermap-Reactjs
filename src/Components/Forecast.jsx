@@ -53,7 +53,7 @@ const Wind = styled(animated.div)`
   position: relative;
 `
 const WindIcon = styled.img`
-  width: 30px;
+  width: 20px;
 `
 const TempLine = styled.div``
 
@@ -136,7 +136,24 @@ export default function Forcast(props) {
         <WindIcon src={windIcon} />
         {props.windSpeed + ' m/s'}
       </Wind>
-      <TempLine>Line</TempLine>
+      <TempLine>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height={`${props.temperature * 2}`}
+          viewBox="0 0 15 215"
+        >
+          <line
+            id="Line"
+            y2="200"
+            transform="translate(7.5 7.5)"
+            fill="none"
+            stroke="#fff"
+            strokeLinecap="round"
+            strokeWidth="15"
+          />
+        </svg>
+      </TempLine>
     </Container>
   )
 }
