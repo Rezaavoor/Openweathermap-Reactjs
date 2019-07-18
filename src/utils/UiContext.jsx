@@ -4,7 +4,7 @@ export const UiContext = createContext()
 
 export const UiProvider = props => {
   const [uiProps, setUiProps] = useState({
-    weatherWidth: '60vw',
+    weatherWidth: window.innerWidth > 415 ? '60vw' : '80vw',
   })
 
   return (

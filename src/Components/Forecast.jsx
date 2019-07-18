@@ -17,7 +17,7 @@ import {
 const Container = styled(animated.div)`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   height: 50%;
 `
@@ -61,7 +61,7 @@ export default function Forcast(props) {
   const [expanded, setExpanded] = useState(false)
   const containerSpring = useSpring({
     to: {
-      height: expanded ? '80%' : '50%',
+      height: expanded && props.numOfForecasts === 4 ? '80%' : '50%',
     },
   })
   const tempMinMaxSpring = useSpring({
