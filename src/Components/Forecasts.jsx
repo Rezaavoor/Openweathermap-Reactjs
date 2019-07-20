@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { generateMedia } from 'styled-media-query'
 import { WeatherContext } from '../utils/WeatherContext'
 
 import Forecast from './Forecast'
-import { useSpring, animated } from 'react-spring'
 
 const media = generateMedia({
   xs: '250px',
@@ -14,8 +13,8 @@ const media = generateMedia({
 })
 
 export default function Forecasts(props) {
-  const forecasts = useContext(WeatherContext)[0].forecasts
-  const numOfForecasts = props.expandedWeather ? 8 : 4
+  const { forecasts } = useContext(WeatherContext)[0]
+  const numOfForecasts = props.expandedWeather ? 7 : 5
   const Container = styled.div`
     display: flex;
     width: 100%;
@@ -32,15 +31,15 @@ export default function Forecasts(props) {
   `
   return (
     <Container>
-      {forecasts.slice(0, numOfForecasts).map(forecast => (
+      {forecasts.slice(1, numOfForecasts).map(forecast => (
         <Forecast
-          time={forecast.time}
-          symbol={forecast.symbol}
-          temperature={forecast.temperature.current}
-          key={forecast.time}
-          tempMax={forecast.temperature.max}
-          tempMin={forecast.temperature.min}
-          windSpeed={forecast.windSpeed}
+          time={forecast.dt_txt.slice(10, 16)}
+          symbol={forecast.weather[0].description}
+          temperature={Math.round(forecast.main.temp - 273.15)}
+          key={forecast.dt}
+          tempMax={Math.round(forecast.main.temp_max - 273.15)}
+          tempMin={Math.round(forecast.main.temp_min - 273.15)}
+          windSpeed={forecast.wind.speed}
           numOfForecasts={numOfForecasts}
         />
       ))}

@@ -7,8 +7,8 @@ import { useSpring, animated } from 'react-spring'
 
 import Forecasts from './Forecasts'
 
-import sunriseIcon from '../Assets/Sunrise.svg'
-import sunsetIcon from '../Assets/Sunset.svg'
+import humidityIcon from '../Assets/Humidity.svg'
+import windIcon from '../Assets/Wind.svg'
 
 import {
   BrokenClouds,
@@ -106,7 +106,7 @@ const TempNumber = styled.div`
   `}
 `
 
-const Suns = styled.div`
+const MoreInfo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -114,20 +114,19 @@ const Suns = styled.div`
     flex-direction: column;
   `}
 `
-const Sun = styled.div`
+const Info = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `
-const SunIcon = styled(animated.img)`
-  width: 70px;
+const Icon = styled(animated.img)`
+  width: 50px;
   ${media.lessThan('md')`width: 50px`}
 `
 const Cloud = styled.div`
   width: 100%;
   height: auto;
   position: relative;
-  top: 20px;
   ${media.lessThan('sm')`
     top:0;
   `}
@@ -143,11 +142,12 @@ const Arrow = styled.span`
   `}
 `
 export default function Weather() {
-  const [weatherData, setWeatherData] = useContext(WeatherContext)
+  const [weatherData] = useContext(WeatherContext)
+  const data = weatherData.forecasts[0]
   const [UiProps, setUiProps] = useContext(UiContext)
   let CloudIMG
   console.log(window.innerWidth)
-  switch (weatherData.symbol) {
+  switch (data.weather[0].description) {
     case 'broken clouds':
       CloudIMG = BrokenClouds
       break
@@ -201,22 +201,22 @@ export default function Weather() {
           </Location>
           <Temp>
             <TempNumber>
-              <h1>{`${weatherData.temperature}°`}</h1>
+              <h1>{`${Math.round(data.main.temp - 273.15)}°`}</h1>
             </TempNumber>
             <Cloud>
               <CloudIMG scale={2} />
             </Cloud>
           </Temp>
-          <Suns>
-            <Sun>
-              <SunIcon src={sunriseIcon} />
-              {weatherData.sunrise}
-            </Sun>
-            <Sun>
-              <SunIcon src={sunsetIcon} />
-              {weatherData.sunset}
-            </Sun>
-          </Suns>
+          <MoreInfo>
+            <Info>
+              <Icon src={humidityIcon} />
+              {data.main.humidity + ' %'}
+            </Info>
+            <Info>
+              <Icon src={windIcon} />
+              {data.wind.speed + ' m/s'}
+            </Info>
+          </MoreInfo>
         </WeatherNow>
         <Forecasts expandedWeather={expandedWeather} />
         <Arrow onClick={expandWeather}>{expandedWeather ? '<' : '>'}</Arrow>
