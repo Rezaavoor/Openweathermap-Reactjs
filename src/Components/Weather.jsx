@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { generateMedia } from 'styled-media-query'
 import { WeatherContext } from '../utils/WeatherContext'
@@ -10,16 +10,7 @@ import Forecasts from './Forecasts'
 import humidityIcon from '../Assets/Humidity.svg'
 import windIcon from '../Assets/Wind.svg'
 
-import {
-  BrokenClouds,
-  ClearSky,
-  FewClouds,
-  Rain,
-  ScatteredClouds,
-  ShowerRain,
-  Snow,
-  Thunderstorm,
-} from '../utils/WeatherIcons'
+import WeatherIcon from '../utils/WeatherIcons'
 
 const media = generateMedia({
   xs: '250px',
@@ -143,38 +134,9 @@ const Arrow = styled.span`
 `
 export default function Weather() {
   const [weatherData] = useContext(WeatherContext)
-  const data = weatherData.forecasts[0]
+  const data = weatherData.loading ? '' : weatherData.forecasts[0]
   const [UiProps, setUiProps] = useContext(UiContext)
-  let CloudIMG
   console.log(window.innerWidth)
-  switch (data.weather[0].description) {
-    case 'broken clouds':
-      CloudIMG = BrokenClouds
-      break
-    case 'clear sky':
-      CloudIMG = ClearSky
-      break
-    case 'few clouds':
-      CloudIMG = FewClouds
-      break
-    case 'rain':
-      CloudIMG = Rain
-      break
-    case 'scattered clouds':
-      CloudIMG = ScatteredClouds
-      break
-    case 'shower rain':
-      CloudIMG = ShowerRain
-      break
-    case 'snow':
-      CloudIMG = Snow
-      break
-    case 'thunderstorm':
-      CloudIMG = Thunderstorm
-      break
-    default:
-      CloudIMG = <div>Weather Symbol Not Found</div>
-  }
   const [expandedWeather, setExpandedWeather] = useState(false)
   const expandWeather = () => {
     expandedWeather && window.innerWidth > 415
@@ -191,7 +153,13 @@ export default function Weather() {
       width: UiProps.weatherWidth,
     },
   })
-  return (
+  useEffect(() => {
+    console.log(weatherData.loading)
+    console.log(weatherData.city)
+  })
+  return weatherData.loading ? (
+    <div>Loading</div>
+  ) : (
     <TheWeather style={weatherSpring}>
       <Shadow />
       <OpenWeather>
@@ -204,7 +172,7 @@ export default function Weather() {
               <h1>{`${Math.round(data.main.temp - 273.15)}°`}</h1>
             </TempNumber>
             <Cloud>
-              <CloudIMG scale={2} />
+              <WeatherIcon icon={data.weather[0].icon} scale={2} />
             </Cloud>
           </Temp>
           <MoreInfo>

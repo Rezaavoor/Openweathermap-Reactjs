@@ -14,7 +14,7 @@ const media = generateMedia({
 
 export default function Forecasts(props) {
   const { forecasts } = useContext(WeatherContext)[0]
-  const numOfForecasts = props.expandedWeather ? 7 : 5
+  const numOfForecasts = props.expandedWeather ? 9 : 5
   const Container = styled.div`
     display: flex;
     width: 100%;
@@ -34,7 +34,7 @@ export default function Forecasts(props) {
       {forecasts.slice(1, numOfForecasts).map(forecast => (
         <Forecast
           time={forecast.dt_txt.slice(10, 16)}
-          symbol={forecast.weather[0].description}
+          icon={forecast.weather[0].icon}
           temperature={Math.round(forecast.main.temp - 273.15)}
           key={forecast.dt}
           tempMax={Math.round(forecast.main.temp_max - 273.15)}

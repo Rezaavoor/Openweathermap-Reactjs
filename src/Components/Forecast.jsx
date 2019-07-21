@@ -3,16 +3,7 @@ import styled from 'styled-components'
 import { useSpring, animated } from 'react-spring'
 import windIcon from '../Assets/Wind.svg'
 
-import {
-  BrokenClouds,
-  ClearSky,
-  FewClouds,
-  Rain,
-  ScatteredClouds,
-  ShowerRain,
-  Snow,
-  Thunderstorm,
-} from '../utils/WeatherIcons'
+import WeatherIcon from '../utils/WeatherIcons'
 
 const Container = styled(animated.div)`
   display: flex;
@@ -61,7 +52,7 @@ export default function Forcast(props) {
   const [expanded, setExpanded] = useState(false)
   const containerSpring = useSpring({
     to: {
-      height: expanded && props.numOfForecasts === 4 ? '80%' : '50%',
+      height: expanded && props.numOfForecasts === 5 ? '80%' : '50%',
     },
   })
   const tempMinMaxSpring = useSpring({
@@ -86,35 +77,6 @@ export default function Forcast(props) {
     setExpanded(!expanded)
   }
 
-  let CloudIMG
-  switch (props.symbol) {
-    case 'broken clouds':
-      CloudIMG = BrokenClouds
-      break
-    case 'clear sky':
-      CloudIMG = ClearSky
-      break
-    case 'few clouds':
-      CloudIMG = FewClouds
-      break
-    case 'rain':
-      CloudIMG = Rain
-      break
-    case 'scattered clouds':
-      CloudIMG = ScatteredClouds
-      break
-    case 'shower rain':
-      CloudIMG = ShowerRain
-      break
-    case 'snow':
-      CloudIMG = Snow
-      break
-    case 'thunderstorm':
-      CloudIMG = Thunderstorm
-      break
-    default:
-      CloudIMG = <div>Weather Symbol Not Found</div>
-  }
   return (
     <Container
       style={containerSpring}
@@ -122,7 +84,7 @@ export default function Forcast(props) {
       onMouseLeave={() => expand()}
     >
       <Time>{props.time}</Time>
-      <CloudIMG />
+      <WeatherIcon icon={props.icon} />
       <Temp>
         <TempCurrent style={tempCurrentSpring}>
           {props.temperature + '°'}

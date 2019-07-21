@@ -39,9 +39,18 @@ const Shadow = styled.div`
 
 export default function Time() {
   const [data] = useContext(WeatherContext)
-  const time = data.forecasts[0].dt_txt.slice(10, 16)
-  const date = data.forecasts[0].dt_txt.slice(0, 10)
-  return (
+  let time = '',
+    date = ''
+  if (!data.loading) {
+    time = data.forecasts[0].dt_txt.slice(10, 16)
+    date = data.forecasts[0].dt_txt.slice(0, 10)
+  }
+  return data.loading ? (
+    <Layout>
+      <Shadow />
+      Loading
+    </Layout>
+  ) : (
     <Layout>
       <Shadow />
       <TheTime>{time}</TheTime>
