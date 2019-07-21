@@ -1,0 +1,4 @@
+[build]
+  Command = "npm run prod"
+  functions = "src/lambda"
+  Publish = "public"
