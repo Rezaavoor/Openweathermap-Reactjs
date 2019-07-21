@@ -7,7 +7,7 @@ const WEATHERAPI = process.env.REACT_APP_WEATHERAPI
 export const WeatherProvider = props => {
   const lat = 59.28867
   const lng = 18.03322
-  const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&mode=json&APPID=${WEATHERAPI}`
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&mode=json&APPID=${WEATHERAPI}`
 
   useEffect(() => {
     console.log('context useEffect')
