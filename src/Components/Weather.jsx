@@ -136,7 +136,6 @@ export default function Weather() {
   const [weatherData] = useContext(WeatherContext)
   const data = weatherData.loading ? '' : weatherData.forecasts[0]
   const [UiProps, setUiProps] = useContext(UiContext)
-  console.log(window.innerWidth)
   const [expandedWeather, setExpandedWeather] = useState(false)
   const expandWeather = () => {
     expandedWeather && window.innerWidth > 415
@@ -154,8 +153,7 @@ export default function Weather() {
     },
   })
   useEffect(() => {
-    console.log(weatherData.loading)
-    console.log(weatherData.city)
+    console.log('Data loading: ' + weatherData.loading)
   })
   return weatherData.loading ? (
     <div>Loading</div>
