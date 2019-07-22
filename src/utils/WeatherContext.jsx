@@ -12,7 +12,7 @@ export const WeatherProvider = props => {
   useEffect(() => {
     console.log('context useEffect')
     axios
-      .get('https://localhost:9000/.netlify/functions/getData')
+      .get('/.netlify/functions/getData')
       .then(json => console.log(json.data))
     axios
       .get(url)
