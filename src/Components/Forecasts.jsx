@@ -24,9 +24,11 @@ export default function Forecasts(props) {
     ${media.lessThan('md')`
       height:100%;
       flex-basis:80%;
+      padding:0;
   `}
     ${media.lessThan('sm')`
     flex-wrap: wrap;
+    padding:0;
     `}
   `
   return (

@@ -8,9 +8,9 @@ import WeatherIcon from '../utils/WeatherIcons'
 const Container = styled(animated.div)`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  height: 50%;
+  height: 60%;
 `
 const Time = styled.div``
 const Temp = styled.div`
@@ -21,6 +21,7 @@ const Temp = styled.div`
   position: relative;
 `
 const TempCurrent = styled(animated.div)`
+  font-size: 0.5rem;
   position: absolute;
 `
 const TempMinMax = styled(animated.div)`
@@ -51,8 +52,8 @@ const TempLine = styled.div``
 export default function Forcast(props) {
   const [expanded, setExpanded] = useState(false)
   const containerSpring = useSpring({
-    to: {
-      height: expanded && props.numOfForecasts === 5 ? '80%' : '50%',
+    to: window.innerWidth < 415 && {
+      height: expanded && props.numOfForecasts === 5 ? '60%' : '40%',
     },
   })
   const tempMinMaxSpring = useSpring({
@@ -64,7 +65,7 @@ export default function Forcast(props) {
   const tempCurrentSpring = useSpring({
     to: {
       left: expanded ? '-25px' : '-5px',
-      fontSize: expanded ? '2rem' : '1.5rem',
+      fontSize: expanded && window.innerWidth > 415 ? '2rem' : '1.5rem',
     },
   })
   const windSpring = useSpring({
@@ -84,7 +85,10 @@ export default function Forcast(props) {
       onMouseLeave={() => expand()}
     >
       <Time>{props.time}</Time>
-      <WeatherIcon icon={props.icon} />
+      <WeatherIcon
+        icon={props.icon}
+        scale={window.innerWidth < 415 ? 0.5 : 1}
+      />
       <Temp>
         <TempCurrent style={tempCurrentSpring}>
           {props.temperature + '°'}

@@ -29,7 +29,7 @@ function App() {
     <WeatherProvider>
       <UiProvider>
         <Layout>
-          {window.innerWidth > 414 && <Time />}
+          <Time />
           <Weather />
         </Layout>
       </UiProvider>

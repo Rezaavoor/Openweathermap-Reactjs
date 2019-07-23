@@ -12,6 +12,8 @@ import windIcon from '../Assets/Wind.svg'
 
 import WeatherIcon from '../utils/WeatherIcons'
 
+require('dotenv').config()
+
 const media = generateMedia({
   xs: '250px',
   sm: '415px',
@@ -60,6 +62,7 @@ const OpenWeather = styled.div`
   display: flex;
   ${media.lessThan('md')`
     flex-direction:column;
+    /* justify-content:space-around; */
   `}
 `
 const WeatherNow = styled.div`
@@ -76,7 +79,11 @@ const WeatherNow = styled.div`
     /* height:30%; */
   `}
 `
-const Location = styled.div``
+const Location = styled.div`
+  ${media.lessThan('md')`
+    width:15%;
+  `}
+`
 const Temp = styled.div`
   display: flex;
   flex-direction: row;
@@ -103,6 +110,7 @@ const MoreInfo = styled.div`
   justify-content: space-around;
   ${media.lessThan('md')`
     flex-direction: column;
+    width:15%;
   `}
 `
 const Info = styled.div`
@@ -127,8 +135,10 @@ const Arrow = styled.span`
   margin-right: 1vw;
   font-size: 2.5rem;
   cursor: pointer;
-  ${media.lessThan('md')`
+  ${media.lessThan('sm')`
     position:absolute;
+    right:0;
+    bottom:-50px;
     font-size:2rem;
   `}
 `
@@ -154,6 +164,8 @@ export default function Weather() {
   })
   useEffect(() => {
     console.log('Data loading: ' + weatherData.loading)
+    console.log('accessing the process.env...')
+    console.log(process.env)
   })
   return weatherData.loading ? (
     <div>Loading</div>

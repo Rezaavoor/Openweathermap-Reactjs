@@ -1,16 +1,30 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { WeatherContext } from '../utils/WeatherContext'
+import { generateMedia } from 'styled-media-query'
+
+const media = generateMedia({
+  xs: '250px',
+  sm: '415px',
+  md: '980px',
+  lg: '1200px',
+})
 
 const Layout = styled.div`
   width: 200px;
   height: 100px;
-  position: relative;
-  left: 25%;
-  top: 25%;
+  position: absolute;
+  left: 65%;
+  top: 65%;
   z-index: 10;
   text-align: center;
   color: #f6f6f6;
+  ${media.lessThan('md')`
+    left:calc(50%-100px);
+  `}
+  ${media.lessThan('sm')`
+    display:none;
+  `}
 `
 const TheTime = styled.div`
   width: 100%;
