@@ -164,8 +164,6 @@ export default function Weather() {
   })
   useEffect(() => {
     console.log('Data loading: ' + weatherData.loading)
-    console.log('accessing the process.env...')
-    console.log(process.env)
   })
   return weatherData.loading ? (
     <div>Loading</div>
