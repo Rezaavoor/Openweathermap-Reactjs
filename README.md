@@ -2,7 +2,7 @@
 
 A simple Reactjs app that uses Openweathermap api to get data using Netlify functions.
 
-Check the demo of the app here : https://rezaavoor.github.io/Openweathermap-Reactjs/
+Check the demo of the app here : https://openweathermap.netlify.app/
 
 ## Instructions
 
